@@ -9,7 +9,12 @@ public class WinNotification extends JFrame { //окно уведомления 
         setLocation(800, 600 ); //начальная позиция окна
         JLabel text = new JLabel(); //поле текста уведомления
         text.setSize(200, 100); //размер поля
-        text.setText("Победили: " + win); //текст поля
+        if (win.equals("Ничья!")){
+            text.setText(win); //текст поля
+        }
+        else{
+            text.setText("Победили: " + win); //текст поля
+        }
         //выравнивание поля по центру окна
         text.setHorizontalAlignment(JLabel.CENTER);
         text.setVerticalAlignment(JLabel.CENTER);

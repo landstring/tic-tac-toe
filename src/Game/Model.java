@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Model {
-    private List<Integer> process_game; //массив состояния клеток, где 0 - пусто, 1 - X, 2 - 0
+    final private List<Integer> process_game; //массив состояния клеток, где 0 - пусто, 1 - X, 2 - 0
     private int flag_move; //флаг "Очерёдность хода" 1 - X, 2 - O
     private boolean isGaming; //флаг "Игра продолжается"
     Model() {
@@ -14,6 +14,10 @@ public class Model {
         }
         flag_move = 1;
         isGaming = true;
+    }
+
+    public boolean checkCell(int cell){
+        return process_game.get(cell) == 0;
     }
     public void makeMove(int cell) { //запись хода в массив состояний
         process_game.set(cell, flag_move); //перевод клетки в состояние
@@ -25,6 +29,10 @@ public class Model {
         else if (checkWin() == 2){
             WinNotification notification = new WinNotification("Уведомление!", "0"); //уведомление о победе O
             isGaming = false; //остановка работы с полем
+        }
+        else if (checkWin() == 4){
+            WinNotification notification = new WinNotification("Уведомление!", "Ничья!"); //уведомление о ничьей
+            isGaming = false;
         }
     }
 
@@ -56,7 +64,19 @@ public class Model {
             return process_game.get(8);
         }
         else {
-            return 0; //победы ни одной из сторон не найдено
+            boolean draw = true; //флаг ничьей
+            for (Integer cell : process_game){ // пробегаемся по клеткам в поисках пустой клетки
+                if (cell.equals(0)){
+                    draw = false;
+                    break;
+                }
+            }
+            if (draw){
+                return 4;
+            }
+            else {
+                return 0;
+            }
         }
     }
     void newGame() { //новая игра, обнуление полей и возврат флагов к исходному состоянию
